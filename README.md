@@ -1,4 +1,4 @@
-# EasySwap Hardhat Project
+# Hardhat Project
 
 ## 背景介绍
 > 2020 年是 DeFi 元年 
