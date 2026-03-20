@@ -234,6 +234,7 @@ contract EasySwapOrderBook is
             // 尝试创建订单
             OrderKey newOrderKey = _makeOrderTry(newOrders[i], buyPrice);
             newOrderKeys[i] = newOrderKey;
+
             if (
                 // 如果订单创建成功，累计ETH金额；如果失败，ETH会被退回
                 OrderKey.unwrap(newOrderKey) !=
