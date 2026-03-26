@@ -80,17 +80,13 @@ contract OrderStorage is Initializable {
         }
 
         // 若该价格档尚未存在，插入价格树
-        RedBlackTreeLibrary.Tree storage priceTree = priceTrees[
-            order.nft.collection
-        ][order.side];
+        RedBlackTreeLibrary.Tree storage priceTree = priceTrees[order.nft.collection][order.side];
         if (!priceTree.exists(order.price)) {
             priceTree.insert(order.price);
         }
 
         // 将订单插入该 collection/side/price 下的订单队列
-        LibOrder.OrderQueue storage orderQueue = orderQueues[
-            order.nft.collection
-        ][order.side][order.price];
+        LibOrder.OrderQueue storage orderQueue = orderQueues[order.nft.collection][order.side][order.price];
 
         if (LibOrder.isSentinel(orderQueue.head)) {
             orderQueues[order.nft.collection][order.side][order.price] =
@@ -123,9 +119,7 @@ contract OrderStorage is Initializable {
     function _removeOrder(
         LibOrder.Order memory order
     ) internal returns (OrderKey orderKey) {
-        LibOrder.OrderQueue storage orderQueue = orderQueues[
-            order.nft.collection
-        ][order.side][order.price];
+        LibOrder.OrderQueue storage orderQueue = orderQueues[order.nft.collection][order.side][order.price];
         orderKey = orderQueue.head;
         OrderKey prevOrderKey;
         bool found;
@@ -166,12 +160,8 @@ contract OrderStorage is Initializable {
         }
         if (found) {
             if (LibOrder.isSentinel(orderQueue.head)) {
-                delete orderQueues[order.nft.collection][order.side][
-                    order.price
-                ];
-                RedBlackTreeLibrary.Tree storage priceTree = priceTrees[
-                    order.nft.collection
-                ][order.side];
+                delete orderQueues[order.nft.collection][order.side][order.price];
+                RedBlackTreeLibrary.Tree storage priceTree = priceTrees[order.nft.collection][order.side];
                 if (priceTree.exists(order.price)) {
                     priceTree.remove(order.price);
                 }
